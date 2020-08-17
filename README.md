@@ -1,13 +1,39 @@
 #### goring
 
 implement from dpdk ring
-
+#### why need goring
+1. golang channel enqueue/dequeue data one by one with lock
+2. goring can enqueue/dequeue batch data at once without lock
+   
 #### need to known:
-1. atomic cas,
+1. atomic cas
 2. [What’s false sharing and how to solve it](https://medium.com/@genchilu/whats-false-sharing-and-how-to-solve-it-using-golang-as-example-ef978a305e10)
 3. [Go memory model](http://golang.org/ref/mem).
 
+#### goring vs channel
+goos: darwin
+goarch: amd64
 
+1. channel Benchmark:
+```
+go test -bench=BenchmarkInterfaceChan -benchmem ring_test.go
+cpu.CacheLinePadSize:64, Sizeof(ringAttr{}):12
+goos: darwin
+goarch: amd64
+BenchmarkInterfaceChan-4   	20000000	       100 ns/op	       8 B/op	       1 allocs/op
+PASS
+ok  	command-line-arguments	2.132s
+```
+2. goring  Benchmark:
+```
+go test -bench=BenchmarkInterfaceRing -benchmem ring_test.go
+cpu.CacheLinePadSize:64, Sizeof(ringAttr{}):12
+goos: darwin
+goarch: amd64
+BenchmarkInterfaceRing-4   	200000000	         6.07 ns/op	       1 B/op	       0 allocs/op
+PASS
+ok  	command-line-arguments	1.831s
+```
 #### dpdk ring 
 (类似disruptor，无锁,通过原子操作compare and swap:cas 来决绝竞争)
 
