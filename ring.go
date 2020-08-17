@@ -252,7 +252,8 @@ func (r *Ring) ringMoveConsHead(oldHead, newHead *uint32, n uint32,
 func updateTail(ht *ringheadtail, oldVal, newVal uint32, isSingle bool, isEnqueue bool) {
 	if !isSingle {
 		for {
-			//多个生产者, 需要等前面的生产者更新完tail值后，当前的生产者才能更新tail
+			//多个生产者, 需要等前面的生产者按次序更新完tail值后，当前的生产者才能更新tail。
+			//这个次序就是多个生产者同时cas去抢ringheadtail.head 的次序
 			//同理，多个消费者也一样
 			if atomic.LoadUint32(&ht.tail) != oldVal {
 				runtime.Gosched()
