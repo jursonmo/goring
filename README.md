@@ -35,7 +35,7 @@ PASS
 ok  	command-line-arguments	1.831s
 ```
 #### dpdk ring 
-(类似disruptor，无锁,通过原子操作compare and swap:cas 来决绝竞争)
+(类似disruptor，无锁,通过原子操作compare and swap:cas 来解决锁竞争问题)
 
 为了实现高效的队列，避免锁的竞争，往往需要实现一个环形队列 
 ##### 1. 如果模型是单生产者/单消费者的话，
