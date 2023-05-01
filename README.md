@@ -34,6 +34,8 @@ BenchmarkInterfaceRing-4   	200000000	         6.07 ns/op	       1 B/op	       0
 PASS
 ok  	command-line-arguments	1.831s
 ```
+注意执行的次数，一个是2千万，一个2亿。
+
 #### dpdk ring 
 (类似disruptor，无锁,通过原子操作compare and swap:cas 来解决锁竞争问题)
 
